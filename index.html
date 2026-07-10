@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect — Be a traveler, not a tourist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Yellowtail&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --orange:#DC7646; --amber:#F4A14B; --sand:#CEC3AE; --mint:#BFDBD0; --sage:#93ADA4;
+    --ink:#22263B; --ink-soft:#5E6275; --bg:#FBF8F3; --card:#FFFFFF; --line:#EDE6DC;
+    --ok:#3FBF8F; --bad:#E05B5B;
+    --r:18px; --shadow:0 10px 30px rgba(34,38,59,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Poppins',system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+  .script{font-family:'Yellowtail',cursive;font-weight:400}
+
+  /* ---------- shell ---------- */
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;max-width:1180px;margin:0 auto}
+  .logo{font-size:34px;color:var(--orange);cursor:pointer;line-height:1;position:relative;user-select:none}
+  .logo .pin{font-size:15px;vertical-align:super;margin-left:2px}
+  nav{display:flex;gap:8px;align-items:center}
+  .navlink{background:none;border:none;font:inherit;font-size:14px;color:var(--ink-soft);cursor:pointer;padding:8px 12px;border-radius:10px}
+  .navlink:hover{background:#F3EDE4;color:var(--ink)}
+  main{max-width:1180px;margin:0 auto;padding:0 28px 90px}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;border:none;cursor:pointer;font:inherit;font-weight:600;
+       background:var(--orange);color:#fff;padding:13px 26px;border-radius:12px;font-size:15px;transition:transform .12s, box-shadow .12s}
+  .btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(220,118,70,.35)}
+  .btn.ghost{background:#fff;color:var(--orange);border:2px solid var(--orange)}
+  .btn.ghost:hover{box-shadow:0 8px 18px rgba(220,118,70,.15)}
+  .btn.small{padding:8px 16px;font-size:13px;border-radius:10px}
+  .btn.ok{background:var(--ok)} .btn.bad{background:var(--bad)}
+  .btn:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+
+  /* ---------- landing ---------- */
+  .hero{position:relative;border-radius:28px;overflow:hidden;background:linear-gradient(115deg,#E9855A 0%,var(--orange) 55%,#C25E33 100%);
+        color:#fff;padding:84px 56px 96px;margin-top:8px}
+  .hero h1{font-size:clamp(40px,6vw,72px);font-weight:800;line-height:1.02;max-width:640px}
+  .hero .tag{font-size:clamp(22px,3vw,34px);color:#FFE3D2;margin-top:10px}
+  .hero p{max-width:520px;margin-top:22px;font-size:16px;color:#FFF0E7;line-height:1.65}
+  .hero .cta{display:flex;gap:14px;margin-top:36px;flex-wrap:wrap}
+  .hero .cta .btn{background:#fff;color:var(--orange)}
+  .hero .cta .btn.alt{background:rgba(255,255,255,.14);color:#fff;border:2px solid rgba(255,255,255,.7)}
+  .hero .bigscript{position:absolute;right:-30px;bottom:-42px;font-size:220px;color:rgba(255,255,255,.10);pointer-events:none}
+  .route{display:flex;align-items:center;gap:0;margin:56px 0 40px;color:var(--sage)}
+  .route .dash{flex:1;border-top:3px dashed var(--sand)}
+  .route .stop{font-size:22px;padding:0 14px}
+  .three{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px}
+  .pillar{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:28px;box-shadow:var(--shadow)}
+  .pillar .em{font-size:30px}
+  .pillar h3{margin:12px 0 8px;font-size:17px}
+  .pillar p{font-size:14px;color:var(--ink-soft);line-height:1.6}
+
+  /* ---------- generic panels ---------- */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:34px;box-shadow:var(--shadow);margin-top:26px}
+  .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--sage);font-weight:700}
+  h2.title{font-size:30px;font-weight:800;margin:6px 0 4px}
+  .sub{color:var(--ink-soft);font-size:14px;line-height:1.6}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr}.hero{padding:56px 30px 70px}}
+  label{display:block;font-size:13px;font-weight:600;margin:18px 0 7px}
+  input[type=text],input[type=email],input[type=number],input[type=date],input[type=password],textarea,select{
+    width:100%;font:inherit;font-size:14px;padding:12px 14px;border:1.5px solid var(--line);border-radius:12px;background:#FDFBF8;color:var(--ink)}
+  input:focus,textarea:focus,select:focus{outline:none;border-color:var(--orange)}
+  textarea{resize:vertical;min-height:84px}
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:8px 16px;font-size:13px;cursor:pointer;user-select:none;transition:all .12s;font-weight:500;color:var(--ink-soft)}
+  .chip:hover{border-color:var(--amber)}
+  .chip.on{background:var(--orange);border-color:var(--orange);color:#fff}
+  .chip.mint{background:#fff} .chip.mint.on{background:var(--sage);border-color:var(--sage)}
+  .steps{display:flex;gap:8px;margin:20px 0 4px}
+  .step-dot{height:6px;flex:1;border-radius:99px;background:var(--line)}
+  .step-dot.on{background:var(--orange)}
+  .row-actions{display:flex;justify-content:space-between;margin-top:30px;gap:12px;flex-wrap:wrap}
+  .hint{font-size:12px;color:var(--sage);margin-top:6px}
+  .error{background:#FDECEC;color:#B23B3B;border-radius:12px;padding:12px 16px;font-size:13px;margin-top:16px;display:none}
+  .error.show{display:block}
+
+  /* ---------- results ---------- */
+  .result-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-top:30px}
+  .cards{display:flex;flex-direction:column;gap:18px;margin-top:18px}
+  .lcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;box-shadow:var(--shadow);display:flex;gap:22px;flex-wrap:wrap}
+  .avatar{width:78px;height:78px;border-radius:20px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:26px;color:#fff;flex-shrink:0}
+  .lbody{flex:1;min-width:250px}
+  .lname{font-size:18px;font-weight:700;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .badge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px}
+  .badge.match{background:#FFF0E4;color:var(--orange)}
+  .badge.verified{background:#E4F5EE;color:#2E9A70}
+  .badge.pending{background:#FFF4DE;color:#B07C1E}
+  .badge.rejected{background:#FDECEC;color:#B23B3B}
+  .lhead{color:var(--ink);font-size:15px;font-weight:600;margin:6px 0}
+  .lmeta{font-size:12.5px;color:var(--ink-soft);display:flex;gap:14px;flex-wrap:wrap;margin:8px 0}
+  .shared{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}
+  .shared .s{font-size:11.5px;background:var(--mint);color:#3E6457;padding:4px 11px;border-radius:99px;font-weight:600}
+  .lprice{text-align:right;min-width:120px;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;gap:12px}
+  .lprice .p{font-size:26px;font-weight:800}
+  .lprice .p span{font-size:12px;color:var(--ink-soft);font-weight:500}
+  .stars{color:var(--amber);font-size:13px}
+
+  /* ---------- admin ---------- */
+  .tabs{display:flex;gap:8px;margin-top:22px;flex-wrap:wrap}
+  .tab{font:inherit;font-size:13.5px;font-weight:600;border:1.5px solid var(--line);background:#fff;color:var(--ink-soft);padding:9px 18px;border-radius:99px;cursor:pointer}
+  .tab.on{background:var(--ink);border-color:var(--ink);color:#fff}
+  .acard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);margin-top:16px}
+  .acard .top{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:flex-start}
+  .kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:10px 22px;margin-top:14px;font-size:13px}
+  .kv .k{color:var(--sage);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:700}
+  .empty{padding:46px;text-align:center;color:var(--ink-soft);font-size:14px}
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;
+         padding:13px 24px;border-radius:12px;font-size:14px;opacity:0;pointer-events:none;transition:all .25s;z-index:50}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .view{display:none}.view.on{display:block}
+  .center{text-align:center}
+  .success-mark{width:74px;height:74px;border-radius:50%;background:var(--mint);color:#2E9A70;font-size:34px;display:flex;align-items:center;justify-content:center;margin:10px auto 18px}
+  footer{background:var(--orange);color:#fff;text-align:center;padding:44px 20px;margin-top:80px}
+  footer .script{font-size:44px}
+  footer p{font-size:12px;color:#FFE3D2;margin-top:10px}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo script" onclick="go('landing')">Connect<span class="pin">📍</span></div>
+  <nav>
+    <button class="navlink" onclick="go('traveler')">Find a Connect</button>
+    <button class="navlink" onclick="go('local')">Become a Connect</button>
+    <button class="navlink" onclick="go('admin')">Admin</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============ LANDING ============ -->
+<section id="view-landing" class="view on">
+  <div class="hero">
+    <h1>Skip the guidebook.<br>Meet the city.</h1>
+    <div class="tag script">Be a traveler, not a tourist</div>
+    <p>Tell us how you like to travel — the food you chase, the nights you keep, the films you love — and we'll match you with a vetted local who'll show you their city the way they actually live it.</p>
+    <div class="cta">
+      <button class="btn" onclick="go('traveler')">Find a Connect →</button>
+      <button class="btn alt" onclick="go('local')">Become a Connect</button>
+    </div>
+    <div class="bigscript script">Connect</div>
+  </div>
+
+  <div class="route">
+    <span class="stop">✈️</span><span class="dash"></span><span class="stop">📍</span><span class="dash"></span><span class="stop">🍜</span><span class="dash"></span><span class="stop">🌅</span>
+  </div>
+
+  <div class="three">
+    <div class="pillar"><div class="em">🧭</div><h3>Matched on taste, not tours</h3><p>A short form on what you love — movies, music, street food, nightlife — matches you to locals who genuinely share it. No fixed itineraries, no scripts.</p></div>
+    <div class="pillar"><div class="em">🛡️</div><h3>Every Connect is vetted</h3><p>Locals apply, build a full profile, and are reviewed and background-checked by our team before they can ever appear in your results.</p></div>
+    <div class="pillar"><div class="em">🍲</div><h3>Travel like Bourdain</h3><p>Hidden kitchens, sunrise points, night markets, the bar with no sign. The places locals keep for themselves — now kept for you too.</p></div>
+  </div>
+</section>
+
+<!-- ============ TRAVELER ============ -->
+<section id="view-traveler" class="view">
+  <div class="panel" id="trav-wizard">
+    <div class="eyebrow">Find a Connect</div>
+    <h2 class="title" id="trav-title">First, a little about you</h2>
+    <p class="sub" id="trav-sub">This takes about a minute — it's how we find locals you'll actually click with.</p>
+    <div class="steps"><div class="step-dot on" id="td1"></div><div class="step-dot" id="td2"></div><div class="step-dot" id="td3"></div></div>
+
+    <!-- step 1: identity -->
+    <div id="trav-s1">
+      <div class="grid2">
+        <div><label>Full name</label><input type="text" id="t-name" placeholder="Anthony Bourdain"></div>
+        <div><label>Email</label><input type="email" id="t-email" placeholder="you@email.com"></div>
+      </div>
+      <label>Languages you speak</label>
+      <div class="chips" id="t-langs"></div>
+    </div>
+
+    <!-- step 2: taste -->
+    <div id="trav-s2" style="display:none">
+      <label>What do you want out of the days? <span style="color:var(--sage);font-weight:500">(pick as many as you like)</span></label>
+      <div class="chips" id="t-acts"></div>
+      <label>Food you chase</label>
+      <div class="chips" id="t-food"></div>
+      <label>Your kind of night</label>
+      <div class="chips" id="t-night"></div>
+      <label>Music you'd play in the cab</label>
+      <div class="chips" id="t-music"></div>
+      <label>Favourite movies <span style="color:var(--sage);font-weight:500">(comma separated — helps the vibe match)</span></label>
+      <input type="text" id="t-movies" placeholder="Lost in Translation, Chef, Before Sunrise">
+      <label>How do you like to travel?</label>
+      <div class="chips" id="t-style">
+        <span class="chip mint" data-v="off_the_beaten_path">🥾 Off the beaten path</span>
+        <span class="chip mint" data-v="balanced">⚖️ A bit of both</span>
+        <span class="chip mint" data-v="popular">🗽 Hit the classics</span>
+      </div>
+    </div>
+
+    <!-- step 3: where & when -->
+    <div id="trav-s3" style="display:none">
+      <label>Where are you headed?</label>
+      <select id="t-city"><option value="">Loading cities…</option></select>
+      <div class="hint">Cities with approved Connects appear here. More opening soon.</div>
+      <div class="grid2">
+        <div><label>Arriving</label><input type="date" id="t-start"></div>
+        <div><label>Leaving</label><input type="date" id="t-end"></div>
+      </div>
+    </div>
+
+    <div class="error" id="t-err"></div>
+    <div class="row-actions">
+      <button class="btn ghost" id="t-back" onclick="travBack()" style="visibility:hidden">← Back</button>
+      <button class="btn" id="t-next" onclick="travNext()">Continue →</button>
+    </div>
+  </div>
+
+  <!-- results -->
+  <div id="trav-results" style="display:none">
+    <div class="result-head">
+      <div>
+        <div class="eyebrow">Your matches</div>
+        <h2 class="title" id="res-title">Connects in Mumbai</h2>
+        <p class="sub" id="res-sub"></p>
+      </div>
+      <button class="btn ghost small" onclick="travEdit()">Edit search</button>
+    </div>
+    <div class="cards" id="res-cards"></div>
+  </div>
+</section>
+
+<!-- ============ LOCAL ============ -->
+<section id="view-local" class="view">
+  <div class="panel" id="loc-wizard">
+    <div class="eyebrow">Become a Connect</div>
+    <h2 class="title" id="loc-title">Show travelers your city</h2>
+    <p class="sub" id="loc-sub">Earn on your own schedule, meet people from everywhere, and put your hidden gems on the map. Every application is reviewed by our team.</p>
+    <div class="steps"><div class="step-dot on" id="ld1"></div><div class="step-dot" id="ld2"></div><div class="step-dot" id="ld3"></div></div>
+
+    <!-- step 1 -->
+    <div id="loc-s1">
+      <div class="grid2">
+        <div><label>Full name</label><input type="text" id="l-name" placeholder="Kavya Lane"></div>
+        <div><label>Email</label><input type="email" id="l-email" placeholder="you@email.com"></div>
+        <div><label>Your city</label><input type="text" id="l-city" placeholder="Mumbai"></div>
+        <div><label>Country</label><input type="text" id="l-country" placeholder="India"></div>
+        <div><label>Age</label><input type="number" id="l-age" min="18" max="99" placeholder="23"></div>
+        <div><label>Education</label><input type="text" id="l-edu" placeholder="Masters — Fine Arts"></div>
+        <div><label>Instagram</label><input type="text" id="l-insta" placeholder="@kavya_lane_connect"></div>
+        <div><label>Dietary</label><input type="text" id="l-diet" placeholder="Non-vegetarian"></div>
+      </div>
+      <label>Languages you speak</label>
+      <div class="chips" id="l-langs"></div>
+    </div>
+
+    <!-- step 2: same taste form -->
+    <div id="loc-s2" style="display:none">
+      <p class="sub">Same form travelers fill — it's how we match you with people you'll genuinely enjoy hosting.</p>
+      <label>What you love showing people</label>
+      <div class="chips" id="l-acts"></div>
+      <label>Food you'd take them to</label>
+      <div class="chips" id="l-food"></div>
+      <label>Your kind of night</label>
+      <div class="chips" id="l-night"></div>
+      <label>Music you love</label>
+      <div class="chips" id="l-music"></div>
+      <label>Favourite movies <span style="color:var(--sage);font-weight:500">(comma separated)</span></label>
+      <input type="text" id="l-movies" placeholder="Gully Boy, City of God">
+    </div>
+
+    <!-- step 3: listing -->
+    <div id="loc-s3" style="display:none">
+      <label>Your headline <span style="color:var(--sage);font-weight:500">(the first thing travelers see)</span></label>
+      <input type="text" id="l-headline" placeholder="Join me on the most gorgeous hikes around Mumbai!">
+      <label>About you</label>
+      <textarea id="l-about" placeholder="I've seen some of the best sunrises in the world. I'll take you to the hidden spots that never make the guidebooks…"></textarea>
+      <div class="grid2">
+        <div><label>Price per day (USD)</label><input type="number" id="l-price" min="5" placeholder="25"></div>
+        <div><label>Extra offer (optional)</label><input type="text" id="l-extra" placeholder="I can drive you around — $40/day"></div>
+      </div>
+      <div class="hint">🛡️ After you apply, our team reviews your profile and runs a background verification. You'll only appear in search once approved.</div>
+    </div>
+
+    <div class="error" id="l-err"></div>
+    <div class="row-actions">
+      <button class="btn ghost" id="l-back" onclick="locBack()" style="visibility:hidden">← Back</button>
+      <button class="btn" id="l-next" onclick="locNext()">Continue →</button>
+    </div>
+  </div>
+
+  <div class="panel center" id="loc-done" style="display:none">
+    <div class="success-mark">✓</div>
+    <h2 class="title">Application received</h2>
+    <p class="sub" style="max-width:440px;margin:8px auto 0">Thanks — your Connect profile is now <b>pending review</b>. Our team vets every application before it goes live. You'll hear from us at the email you provided.</p>
+    <div style="margin-top:26px"><button class="btn" onclick="go('landing')">Back to home</button></div>
+  </div>
+</section>
+
+<!-- ============ ADMIN ============ -->
+<section id="view-admin" class="view">
+  <div class="panel" id="admin-gate">
+    <div class="eyebrow">Admin</div>
+    <h2 class="title">Vetting console</h2>
+    <p class="sub">Enter the admin passcode to review Connect applications.</p>
+    <label>Passcode</label>
+    <input type="password" id="a-pass" placeholder="••••••••" style="max-width:320px">
+    <div class="hint">Demo passcode: <b>connect2026</b> (this gate is client-side only — wire up Supabase Auth before production)</div>
+    <div class="error" id="a-err"></div>
+    <div class="row-actions"><span></span><button class="btn" onclick="adminLogin()">Enter console →</button></div>
+  </div>
+
+  <div id="admin-console" style="display:none">
+    <div class="result-head">
+      <div>
+        <div class="eyebrow">Admin · Vetting console</div>
+        <h2 class="title">Connect applications</h2>
+      </div>
+      <button class="btn ghost small" onclick="loadAdmin()">↻ Refresh</button>
+    </div>
+    <div class="tabs">
+      <button class="tab on" id="tab-pending" onclick="adminTab('pending')">Pending <span id="cnt-pending"></span></button>
+      <button class="tab" id="tab-approved" onclick="adminTab('approved')">Approved</button>
+      <button class="tab" id="tab-rejected" onclick="adminTab('rejected')">Rejected</button>
+      <button class="tab" id="tab-bookings" onclick="adminTab('bookings')">Booking requests</button>
+    </div>
+    <div id="admin-list"></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="script">Connect</div>
+  <p>All rights reserved 2026 · connect</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= Supabase REST client (no SDK needed) ================= */
+const SB_URL = 'https://yjhqsmolrmoteufemlaq.supabase.co/rest/v1';
+const SB_KEY = 'sb_publishable_WU9Dj3L5lPvSEATQae8BiA_bMsBds_e';
+
+async function sb(path, {method='GET', body=null, prefer=null} = {}){
+  const headers = {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type':'application/json'};
+  if (prefer) headers['Prefer'] = prefer;
+  const res = await fetch(SB_URL + path, {method, headers, body: body ? JSON.stringify(body) : null});
+  const text = await res.text();
+  let data = null; try { data = text ? JSON.parse(text) : null; } catch(e){ data = text; }
+  if (!res.ok) { const msg = (data && (data.message || data.hint || data.details)) || res.statusText; const err = new Error(msg); err.status = res.status; throw err; }
+  return data;
+}
+
+/* ================= option banks ================= */
+const OPT = {
+  langs: ['English','Hindi','Spanish','French','Japanese','Mandarin','Arabic','German','Portuguese','Italian','Catalan','Marathi'],
+  acts:  ['hidden gems','hikes','sunrise spots','street art','markets','museums','photography','food tours','temples','beaches','vintage shopping','architecture','bike rides','gardens','history walks','live music'],
+  food:  ['street food','fine dining','cafes','vegetarian','tapas','ramen','sushi','izakaya','bakeries','late night eats','chai spots','wine','markets','pizza','delis','brunch'],
+  night: ['rooftop bars','dive bars','clubs','live music','night markets','jazz bars','wine bars','chill cafes','karaoke','izakaya crawls','techno clubs','salsa nights','comedy clubs','listening bars','underground gigs','beach bars','terraces','cocktail bars'],
+  music: ['indie','jazz','hip hop','rap','electronic','techno','rock','pop','bollywood','flamenco','salsa','city pop','classical','soul']
+};
+const AV_COLORS = ['#DC7646','#F4A14B','#93ADA4','#7E9ECE','#C97BA8','#5FA98B'];
+
+/* ================= tiny helpers ================= */
+const $ = id => document.getElementById(id);
+function toast(msg){ const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
+function chips(el, opts, cls=''){ el.innerHTML = opts.map(o=>`<span class="chip ${cls}" data-v="${o}">${o}</span>`).join(''); }
+function wireChips(el, single=false){
+  el.addEventListener('click', e=>{
+    const c = e.target.closest('.chip'); if(!c) return;
+    if (single) el.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));
+    c.classList.toggle('on');
+  });
+}
+function picked(el){ return [...el.querySelectorAll('.chip.on')].map(c=>c.dataset.v); }
+function parseList(v){ return v.split(',').map(s=>s.trim().toLowerCase()).filter(Boolean); }
+function initials(name){ return name.split(/\s+/).map(w=>w[0]||'').join('').slice(0,2).toUpperCase(); }
+function avColor(seed){ let h=0; for(const ch of seed) h=(h*31+ch.charCodeAt(0))>>>0; return AV_COLORS[h % AV_COLORS.length]; }
+function esc(s){ return String(s??'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
+function showErr(id,msg){ const e=$(id); e.textContent=msg; e.classList.add('show'); }
+function getPrefs(profile){ const p = profile && profile.preferences; return (Array.isArray(p) ? p[0] : p) || {}; }
+function clearErr(id){ $(id).classList.remove('show'); }
+
+/* ================= routing ================= */
+function go(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  $('view-'+view).classList.add('on');
+  window.scrollTo({top:0});
+  if (view==='traveler') loadCities();
+}
+
+/* ================= profile upsert (shared) ================= */
+async function upsertProfile(name, email, role){
+  try {
+    const rows = await sb('/profiles', {method:'POST', body:{email, full_name:name, role}, prefer:'return=representation'});
+    return rows[0];
+  } catch(e){
+    if (e.status === 409){ // email exists — fetch it
+      const rows = await sb(`/profiles?email=eq.${encodeURIComponent(email)}&select=*`);
+      if (rows.length) return rows[0];
+    }
+    throw e;
+  }
+}
+async function upsertPrefs(profile_id, prefs){
+  await sb('/preferences?on_conflict=profile_id', {method:'POST', body:{profile_id, ...prefs, updated_at:new Date().toISOString()}, prefer:'resolution=merge-duplicates'});
+}
+
+/* ================= TRAVELER FLOW ================= */
+let tStep = 1, tProfile = null, tPrefs = null, tTrip = null;
+
+chips($('t-langs'), OPT.langs); wireChips($('t-langs'));
+chips($('t-acts'), OPT.acts); wireChips($('t-acts'));
+chips($('t-food'), OPT.food); wireChips($('t-food'));
+chips($('t-night'), OPT.night); wireChips($('t-night'));
+chips($('t-music'), OPT.music); wireChips($('t-music'));
+wireChips($('t-style'), true);
+
+const T_TITLES = {1:['First, a little about you','This takes about a minute — it\'s how we find locals you\'ll actually click with.'],
+                  2:['What do you love?','Be honest — the match is only as good as the taste you give us.'],
+                  3:['Where and when?','Pick your city and dates and we\'ll line up your Connects.']};
+function travRender(){
+  [1,2,3].forEach(i=>{ $('trav-s'+i).style.display = i===tStep?'block':'none'; $('td'+i).classList.toggle('on', i<=tStep); });
+  $('trav-title').textContent = T_TITLES[tStep][0]; $('trav-sub').textContent = T_TITLES[tStep][1];
+  $('t-back').style.visibility = tStep===1?'hidden':'visible';
+  $('t-next').textContent = tStep===3 ? 'Show my Connects →' : 'Continue →';
+  clearErr('t-err');
+}
+function travBack(){ if(tStep>1){tStep--; travRender();} }
+async function travNext(){
+  clearErr('t-err');
+  if (tStep===1){
+    const name=$('t-name').value.trim(), email=$('t-email').value.trim().toLowerCase();
+    if(!name || !/^\S+@\S+\.\S+$/.test(email)) return showErr('t-err','Please add your name and a valid email.');
+    tStep=2; return travRender();
+  }
+  if (tStep===2){
+    if(!picked($('t-acts')).length) return showErr('t-err','Pick at least one thing you love doing — it drives the match.');
+    tStep=3; return travRender();
+  }
+  // step 3 — submit
+  const city=$('t-city').value, s=$('t-start').value, e=$('t-end').value;
+  if(!city) return showErr('t-err','Pick a city.');
+  if(!s || !e || e < s) return showErr('t-err','Add valid dates (leaving on or after arriving).');
+  const btn=$('t-next'); btn.disabled=true; btn.textContent='Finding your people…';
+  try{
+    tProfile = await upsertProfile($('t-name').value.trim(), $('t-email').value.trim().toLowerCase(), 'traveler');
+    tPrefs = {
+      favourite_movies: parseList($('t-movies').value),
+      music: picked($('t-music')), food_styles: picked($('t-food')),
+      nightlife: picked($('t-night')), activities: picked($('t-acts')),
+      languages: picked($('t-langs')),
+      travel_style: (picked($('t-style'))[0] || 'balanced')
+    };
+    await upsertPrefs(tProfile.id, tPrefs);
+    const trips = await sb('/trips', {method:'POST', body:{traveler_id:tProfile.id, city, start_date:s, end_date:e}, prefer:'return=representation'});
+    tTrip = trips[0];
+    await showResults(city);
+  }catch(err){ showErr('t-err','Something went wrong: '+err.message); }
+  btn.disabled=false; travRender();
+}
+function travEdit(){ $('trav-results').style.display='none'; $('trav-wizard').style.display='block'; tStep=3; travRender(); }
+
+async function loadCities(){
+  try{
+    const rows = await sb('/locals?select=city&status=eq.approved');
+    const cities = [...new Set(rows.map(r=>r.city))].sort();
+    $('t-city').innerHTML = '<option value="">Choose a city…</option>' + cities.map(c=>`<option>${esc(c)}</option>`).join('');
+  }catch(e){ $('t-city').innerHTML = '<option value="">Could not load cities</option>'; }
+}
+
+/* ---- matching ---- */
+function jaccard(a,b){
+  const A=new Set((a||[]).map(x=>x.toLowerCase())), B=new Set((b||[]).map(x=>x.toLowerCase()));
+  if(!A.size && !B.size) return 0;
+  let inter=0; A.forEach(x=>{ if(B.has(x)) inter++; });
+  return inter / (A.size + B.size - inter);
+}
+function sharedItems(a,b){
+  const B=new Set((b||[]).map(x=>x.toLowerCase()));
+  return (a||[]).filter(x=>B.has(x.toLowerCase()));
+}
+function matchScore(me, them){
+  let s = 0;
+  s += 0.34 * jaccard(me.activities, them.activities);
+  s += 0.22 * jaccard(me.food_styles, them.food_styles);
+  s += 0.18 * jaccard(me.nightlife, them.nightlife);
+  s += 0.10 * jaccard(me.music, them.music);
+  s += 0.06 * jaccard(me.favourite_movies, them.favourite_movies);
+  s += 0.10 * (sharedItems(me.languages, them.languages).length ? 1 : 0);
+  if (me.travel_style && them.travel_style && me.travel_style===them.travel_style) s += 0.06;
+  return Math.min(0.99, 0.30 + s); // floor so early users still see warm numbers
+}
+
+async function showResults(city){
+  const locals = await sb(`/locals?select=*,profile:profiles(full_name,preferences(*))&status=eq.approved&city=eq.${encodeURIComponent(city)}`);
+  const scored = locals.map(l=>{
+    const p = getPrefs(l.profile);
+    const score = matchScore(tPrefs, p);
+    const shared = [
+      ...sharedItems(tPrefs.activities, p.activities),
+      ...sharedItems(tPrefs.food_styles, p.food_styles),
+      ...sharedItems(tPrefs.nightlife, p.nightlife),
+      ...sharedItems(tPrefs.music, p.music)
+    ].slice(0,6);
+    return {...l, score, shared};
+  }).sort((a,b)=>b.score-a.score);
+
+  $('trav-wizard').style.display='none';
+  $('trav-results').style.display='block';
+  $('res-title').textContent = `Connects in ${city}`;
+  $('res-sub').textContent = `${scored.length} vetted local${scored.length===1?'':'s'} · ${tTrip.start_date} → ${tTrip.end_date} · ranked by taste match`;
+  $('res-cards').innerHTML = scored.length ? scored.map(cardHTML).join('') :
+    `<div class="panel empty">No approved Connects in ${esc(city)} yet — we're onboarding locals there now.</div>`;
+}
+function cardHTML(l){
+  const name = l.profile ? l.profile.full_name : 'Connect';
+  const pct = Math.round(l.score*100);
+  return `<div class="lcard">
+    <div class="avatar" style="background:${avColor(name)}">${initials(name)}</div>
+    <div class="lbody">
+      <div class="lname">${esc(name)}
+        <span class="badge match">${pct}% match</span>
+        <span class="badge verified">🛡 Safety verified</span>
+      </div>
+      <div class="lhead">${esc(l.headline||'')}</div>
+      <div class="lmeta">
+        <span>📍 ${esc(l.city)}${l.country? ', '+esc(l.country):''}</span>
+        <span>🗣 ${esc((l.languages||[]).join(', '))}</span>
+        <span class="stars">★ ${l.rating} <span style="color:var(--ink-soft)">(${l.reviews_count})</span></span>
+        <span>💬 ${esc(l.response_time||'')}</span>
+      </div>
+      ${l.shared.length? `<div class="shared">${l.shared.map(s=>`<span class="s">✓ ${esc(s)}</span>`).join('')}</div>`:''}
+    </div>
+    <div class="lprice">
+      <div class="p">$${Number(l.price_per_day)}<span>/day</span></div>
+      <button class="btn small" onclick="requestConnect('${l.id}', this)">Request to Connect</button>
+    </div>
+  </div>`;
+}
+async function requestConnect(localId, btn){
+  btn.disabled = true; btn.textContent = 'Sending…';
+  try{
+    await sb('/bookings', {method:'POST', body:{trip_id:tTrip.id, local_id:localId, message:'Requested via taste match'}, prefer:'return=representation'});
+    btn.textContent='Requested ✓';
+    toast('Request sent! Your Connect will respond soon.');
+  }catch(e){
+    if(e.status===409){ btn.textContent='Requested ✓'; toast('You\'ve already requested this Connect for this trip.'); }
+    else { btn.disabled=false; btn.textContent='Request to Connect'; toast('Could not send request: '+e.message); }
+  }
+}
+
+/* ================= LOCAL FLOW ================= */
+let lStep = 1;
+chips($('l-langs'), OPT.langs); wireChips($('l-langs'));
+chips($('l-acts'), OPT.acts); wireChips($('l-acts'));
+chips($('l-food'), OPT.food); wireChips($('l-food'));
+chips($('l-night'), OPT.night); wireChips($('l-night'));
+chips($('l-music'), OPT.music); wireChips($('l-music'));
+
+const L_TITLES = {1:['Show travelers your city','Earn on your own schedule, meet people from everywhere, and put your hidden gems on the map.'],
+                  2:['Your taste','We match you with travelers who share it — hosting is better when you\'d hang out anyway.'],
+                  3:['Your listing','This is what travelers see. Make it sound like you.']};
+function locRender(){
+  [1,2,3].forEach(i=>{ $('loc-s'+i).style.display = i===lStep?'block':'none'; $('ld'+i).classList.toggle('on', i<=lStep); });
+  $('loc-title').textContent = L_TITLES[lStep][0]; $('loc-sub').textContent = L_TITLES[lStep][1];
+  $('l-back').style.visibility = lStep===1?'hidden':'visible';
+  $('l-next').textContent = lStep===3 ? 'Submit application →' : 'Continue →';
+  clearErr('l-err');
+}
+function locBack(){ if(lStep>1){lStep--; locRender();} }
+async function locNext(){
+  clearErr('l-err');
+  if (lStep===1){
+    const name=$('l-name').value.trim(), email=$('l-email').value.trim().toLowerCase(), city=$('l-city').value.trim();
+    if(!name || !/^\S+@\S+\.\S+$/.test(email) || !city) return showErr('l-err','Name, a valid email and your city are required.');
+    const age = parseInt($('l-age').value,10);
+    if($('l-age').value && (isNaN(age) || age < 18)) return showErr('l-err','Connects must be 18 or older.');
+    if(!picked($('l-langs')).length) return showErr('l-err','Pick at least one language.');
+    lStep=2; return locRender();
+  }
+  if (lStep===2){
+    if(!picked($('l-acts')).length) return showErr('l-err','Pick at least one thing you love showing people.');
+    lStep=3; return locRender();
+  }
+  // submit
+  const headline=$('l-headline').value.trim(), price=parseFloat($('l-price').value);
+  if(!headline) return showErr('l-err','Add a headline — it\'s the first thing travelers see.');
+  if(isNaN(price) || price<=0) return showErr('l-err','Set a price per day.');
+  const btn=$('l-next'); btn.disabled=true; btn.textContent='Submitting…';
+  try{
+    const profile = await upsertProfile($('l-name').value.trim(), $('l-email').value.trim().toLowerCase(), 'local');
+    await upsertPrefs(profile.id, {
+      favourite_movies: parseList($('l-movies').value),
+      music: picked($('l-music')), food_styles: picked($('l-food')),
+      nightlife: picked($('l-night')), activities: picked($('l-acts')),
+      languages: picked($('l-langs')), travel_style: 'off_the_beaten_path'
+    });
+    const extra = $('l-extra').value.trim();
+    await sb('/locals', {method:'POST', prefer:'return=representation', body:{
+      profile_id: profile.id,
+      city: $('l-city').value.trim(), country: $('l-country').value.trim() || null,
+      headline, about: $('l-about').value.trim() || null,
+      price_per_day: price,
+      extra_offers: extra ? [{label: extra, price: null}] : [],
+      languages: picked($('l-langs')),
+      age: parseInt($('l-age').value,10) || null,
+      education: $('l-edu').value.trim() || null,
+      instagram: $('l-insta').value.trim() || null,
+      dietary: $('l-diet').value.trim() || null,
+      status: 'pending'
+    }});
+    $('loc-wizard').style.display='none'; $('loc-done').style.display='block';
+  }catch(err){
+    if (err.status===409) showErr('l-err','A Connect application already exists for this email.');
+    else showErr('l-err','Something went wrong: '+err.message);
+  }
+  btn.disabled=false; if(lStep===3) btn.textContent='Submit application →';
+}
+
+/* ================= ADMIN ================= */
+const ADMIN_PASS = 'connect2026';
+let adminData = {pending:[],approved:[],rejected:[],bookings:[]}, adminView='pending';
+
+function adminLogin(){
+  clearErr('a-err');
+  if ($('a-pass').value !== ADMIN_PASS) return showErr('a-err','Wrong passcode.');
+  $('admin-gate').style.display='none'; $('admin-console').style.display='block';
+  loadAdmin();
+}
+async function loadAdmin(){
+  $('admin-list').innerHTML = '<div class="panel empty">Loading…</div>';
+  try{
+    const locals = await sb('/locals?select=*,profile:profiles(full_name,email,preferences(*))&order=created_at.desc');
+    adminData.pending  = locals.filter(l=>l.status==='pending');
+    adminData.approved = locals.filter(l=>l.status==='approved');
+    adminData.rejected = locals.filter(l=>l.status==='rejected');
+    adminData.bookings = await sb('/bookings?select=*,trip:trips(city,start_date,end_date,traveler:profiles(full_name,email)),local:locals(headline,city,profile:profiles(full_name))&order=created_at.desc');
+    $('cnt-pending').textContent = adminData.pending.length ? `· ${adminData.pending.length}` : '';
+    adminRender();
+  }catch(e){ $('admin-list').innerHTML = `<div class="panel empty">Could not load: ${esc(e.message)}</div>`; }
+}
+function adminTab(v){
+  adminView=v;
+  ['pending','approved','rejected','bookings'].forEach(t=>$('tab-'+t).classList.toggle('on', t===v));
+  adminRender();
+}
+function adminRender(){
+  const list=$('admin-list');
+  if (adminView==='bookings'){
+    list.innerHTML = adminData.bookings.length ? adminData.bookings.map(b=>{
+      const trav = b.trip && b.trip.traveler ? b.trip.traveler : {};
+      const loc = b.local || {};
+      return `<div class="acard"><div class="top">
+        <div>
+          <b>${esc(trav.full_name||'Traveler')}</b> <span class="sub">(${esc(trav.email||'')})</span>
+          <div class="sub" style="margin-top:4px">→ requested <b>${esc(loc.profile? loc.profile.full_name : 'Connect')}</b> in ${esc(b.trip? b.trip.city:'')} · ${esc(b.trip? b.trip.start_date:'')} → ${esc(b.trip? b.trip.end_date:'')}</div>
+        </div>
+        <span class="badge pending">${esc(b.status)}</span>
+      </div></div>`;
+    }).join('') : '<div class="panel empty">No booking requests yet.</div>';
+    return;
+  }
+  const rows = adminData[adminView];
+  list.innerHTML = rows.length ? rows.map(l=>{
+    const p = l.profile||{}, prefs = getPrefs(p);
+    const badge = l.status==='pending' ? '<span class="badge pending">Pending review</span>'
+               : l.status==='approved' ? '<span class="badge verified">Approved</span>'
+               : '<span class="badge rejected">Rejected</span>';
+    return `<div class="acard">
+      <div class="top">
+        <div style="display:flex;gap:16px;align-items:center">
+          <div class="avatar" style="width:56px;height:56px;font-size:19px;border-radius:16px;background:${avColor(p.full_name||'x')}">${initials(p.full_name||'C')}</div>
+          <div>
+            <b>${esc(p.full_name||'')}</b> ${badge}
+            <div class="sub">${esc(p.email||'')} · 📍 ${esc(l.city)}${l.country?', '+esc(l.country):''} · $${Number(l.price_per_day)}/day</div>
+          </div>
+        </div>
+        ${l.status==='pending' ? `<div style="display:flex;gap:10px">
+          <button class="btn small ok" onclick="vet('${l.id}','approved',this)">✓ Approve</button>
+          <button class="btn small bad" onclick="vet('${l.id}','rejected',this)">✕ Reject</button>
+        </div>` : `<div style="display:flex;gap:10px">
+          <button class="btn small ghost" onclick="vet('${l.id}','${l.status==='approved'?'rejected':'approved'}',this)">${l.status==='approved'?'Revoke':'Approve instead'}</button>
+        </div>`}
+      </div>
+      <div class="kv">
+        <div><div class="k">Headline</div>${esc(l.headline||'—')}</div>
+        <div><div class="k">Languages</div>${esc((l.languages||[]).join(', ')||'—')}</div>
+        <div><div class="k">Age / Education</div>${l.age||'—'} · ${esc(l.education||'—')}</div>
+        <div><div class="k">Instagram</div>${esc(l.instagram||'—')}</div>
+        <div><div class="k">Loves showing</div>${esc((prefs.activities||[]).join(', ')||'—')}</div>
+        <div><div class="k">Food</div>${esc((prefs.food_styles||[]).join(', ')||'—')}</div>
+        <div><div class="k">Nightlife</div>${esc((prefs.nightlife||[]).join(', ')||'—')}</div>
+        <div><div class="k">Applied</div>${new Date(l.created_at).toLocaleDateString()}</div>
+      </div>
+      ${l.about? `<p class="sub" style="margin-top:12px">"${esc(l.about)}"</p>`:''}
+    </div>`;
+  }).join('') : `<div class="panel empty">Nothing in ${adminView}.</div>`;
+}
+async function vet(id, status, btn){
+  btn.disabled=true;
+  try{
+    await sb(`/locals?id=eq.${id}`, {method:'PATCH', body:{status, reviewed_at:new Date().toISOString()}, prefer:'return=representation'});
+    toast(status==='approved' ? 'Connect approved — now live in search.' : 'Application rejected.');
+    await loadAdmin();
+  }catch(e){ toast('Update failed: '+e.message); btn.disabled=false; }
+}
+
+/* init */
+travRender(); locRender();
+</script>
+</body>
+</html>
